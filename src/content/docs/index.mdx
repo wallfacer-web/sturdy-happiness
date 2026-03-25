@@ -1,0 +1,84 @@
+---
+title: 提示词工程
+description: 面向教学、研究与实践的提示词工程课程门户。
+template: splash
+hero:
+  tagline: 把提示词从“会问”升级为“能设计、能评测、能落地”的系统能力。
+  actions:
+    - text: 浏览课程总导航
+      link: ./course-map/
+      icon: right-arrow
+    - text: 查看课程介绍
+      link: ./course-intro/
+      icon: open-book
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## 这是一个什么站点
+
+这里不是单页讲义，也不是零散笔记堆叠，而是一套围绕大模型协作展开的课程门户。内容从基础提示设计出发，逐步延展到上下文工程、工作流编排、评测治理与智能体实践，适合教师、学生和自学者直接按模块进入。
+
+## 快速入口
+
+<CardGrid stagger>
+  <Card title="课程总导航">
+    从全局视角进入整套课程结构。  
+    [打开导航](./course-map/)
+  </Card>
+  <Card title="课程介绍">
+    先看课程定位、学习目标与适用对象。  
+    [查看介绍](./course-intro/)
+  </Card>
+  <Card title="角色入口">
+    按教师、学生、自学者三类路径进入。  
+    [进入角色入口](./audience-entry/)
+  </Card>
+  <Card title="工作台总览">
+    直接从四层工作台开始学习和备课。  
+    [进入工作台](./workbench-overview/)
+  </Card>
+</CardGrid>
+
+## 课程主干
+
+<CardGrid>
+  <Card title="基础层">
+    学会把模糊需求改写成结构化指令，建立稳定的人机协作起点。  
+    [查看基础层](./20-工作台/10-基础层/)
+  </Card>
+  <Card title="方法层">
+    进入 Few-shot、上下文组织、RAG 与推理激发等核心方法。  
+    [查看方法层](./20-工作台/20-方法层/)
+  </Card>
+  <Card title="应用层">
+    关注多步工作流、评测设计、版本控制与实际项目落地。  
+    [查看应用层](./20-工作台/30-应用层/)
+  </Card>
+  <Card title="前沿层">
+    延伸到工具调用、Plan-and-Execute、多智能体和风险护栏。  
+    [查看前沿层](./20-工作台/40-前沿层/)
+  </Card>
+</CardGrid>
+
+## 资源分区
+
+<CardGrid>
+  <Card title="知识卡片">
+    用概念卡、方法卡、边界卡建立长期可复用知识库。  
+    [进入知识卡片](./30-知识卡片/)
+  </Card>
+  <Card title="模板库">
+    直接拿来改写、教学、实验、RAG 与智能体设计。  
+    [进入模板库](./40-模板/)
+  </Card>
+  <Card title="对象库">
+    聚合案例、失败样例、学习者画像与课堂活动资源。  
+    [进入对象库](./50-对象库/)
+  </Card>
+  <Card title="课程运行">
+    面向周次安排、作业评分、项目任务和课堂实施。  
+    [进入课程运行](./60-课程运行/)
+  </Card>
+</CardGrid>

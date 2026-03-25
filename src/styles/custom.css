@@ -1,0 +1,39 @@
+:root {
+	--sl-color-accent-low: #eef4ee;
+	--sl-color-accent: #2f6b55;
+	--sl-color-accent-high: #183a2d;
+	--sl-color-bg: #fbfaf7;
+	--sl-color-text-accent: #183a2d;
+}
+
+:root[data-theme='dark'] {
+	--sl-color-accent-low: #163128;
+	--sl-color-accent: #6fb48d;
+	--sl-color-accent-high: #d6f0df;
+}
+
+.hero {
+	border: 1px solid color-mix(in srgb, var(--sl-color-accent) 16%, transparent);
+	border-radius: 1.5rem;
+	padding: 2rem;
+	background:
+		radial-gradient(circle at top right, color-mix(in srgb, var(--sl-color-accent) 14%, transparent), transparent 30rem),
+		linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(239, 245, 240, 0.9));
+	box-shadow: 0 24px 80px rgba(24, 58, 45, 0.08);
+}
+
+:root[data-theme='dark'] .hero {
+	background:
+		radial-gradient(circle at top right, rgba(111, 180, 141, 0.16), transparent 30rem),
+		linear-gradient(135deg, rgba(21, 27, 25, 0.96), rgba(18, 36, 30, 0.92));
+	box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+}
+
+.card {
+	border-radius: 1.2rem;
+	border: 1px solid color-mix(in srgb, var(--sl-color-accent) 12%, transparent);
+}
+
+.card a {
+	font-weight: 600;
+}
