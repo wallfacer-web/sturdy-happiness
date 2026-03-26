@@ -43,6 +43,19 @@ const specialSlugs = new Map([
 	['工作台总览（网页版）.md', 'workbench-overview'],
 ]);
 
+const directoryIndexBasenames = new Set([
+	'角色入口总览.md',
+	'00-工作台总览.md',
+	'00-基础层说明.md',
+	'00-方法层说明.md',
+	'00-应用层说明.md',
+	'00-前沿层说明.md',
+	'知识卡片MOC.md',
+	'模板总览.md',
+	'对象库总览.md',
+	'课程运行总览.md',
+]);
+
 const noteMap = new Map();
 const routeMap = new Map();
 const filesToImport = [];
@@ -61,7 +74,7 @@ await walk(sourceRoot);
 for (const sourceFile of filesToImport) {
 	const sourceRel = toPosix(path.relative(sourceRoot, sourceFile));
 	const targetRel = targetRelativePath(sourceRel);
-	const route = stripMarkdownExtension(targetRel);
+	const route = primaryRouteForSourceRel(sourceRel);
 	const noteName = path.posix.basename(sourceRel, '.md');
 
 	routeMap.set(sourceRel, route);
@@ -90,15 +103,17 @@ for (const sourceFile of filesToImport) {
 	const { title, body } = extractTitleAndBody(raw, path.posix.basename(sourceRel, '.md'));
 	const cleanedBody = stripLeadingTitleHeading(body, title);
 	const convertedBody = replaceWikiLinks(cleanedBody, sourceRel);
-	const frontmatterLines = ['---', `title: ${yamlString(title)}`];
 	const specialSlug = specialSlugs.get(sourceName);
-	if (specialSlug) {
-		frontmatterLines.push(`slug: ${yamlString(specialSlug)}`);
-	}
-	frontmatterLines.push('---', '');
-	const frontmatter = frontmatterLines.join('\n');
+	const documentSlug = specialSlug ?? primaryRouteForSourceRel(sourceRel);
+	const rendered = renderDocument(title, convertedBody, documentSlug);
 
-	await fs.writeFile(outputPath, `${frontmatter}\n${convertedBody.trim()}\n`, 'utf8');
+	await fs.writeFile(outputPath, rendered, 'utf8');
+
+	if (shouldCreateDirectoryIndex(sourceRel)) {
+		const directoryIndexPath = path.join(path.dirname(outputPath), 'index.md');
+		const directoryRendered = renderDocument(title, convertedBody);
+		await fs.writeFile(directoryIndexPath, directoryRendered, 'utf8');
+	}
 }
 
 console.log(`Imported ${filesToImport.length} Markdown files from ${sourceRoot}`);
@@ -149,6 +164,32 @@ function targetRelativePath(sourceRel) {
 	}
 
 	return sourceRel;
+}
+
+function primaryRouteForSourceRel(sourceRel) {
+	const targetRel = targetRelativePath(sourceRel);
+
+	if (path.posix.basename(targetRel).toLowerCase() === 'index.md') {
+		return path.posix.dirname(targetRel);
+	}
+
+	return stripMarkdownExtension(targetRel);
+}
+
+function shouldCreateDirectoryIndex(sourceRel) {
+	return directoryIndexBasenames.has(path.posix.basename(sourceRel));
+}
+
+function renderDocument(title, body, slug) {
+	const frontmatterLines = ['---', `title: ${yamlString(title)}`];
+
+	if (slug) {
+		frontmatterLines.push(`slug: ${yamlString(slug)}`);
+	}
+
+	frontmatterLines.push('---', '');
+	const frontmatter = frontmatterLines.join('\n');
+	return `${frontmatter}\n${body.trim()}\n`;
 }
 
 function extractTitleAndBody(raw, fallbackTitle) {
@@ -245,12 +286,12 @@ function resolveTargetRoute(currentSourceRel, rawTarget) {
 
 function relativeHref(fromRoute, toRoute) {
 	if (toRoute === '') {
-		const fromDir = fromRoute ? path.posix.dirname(fromRoute) : '';
+		const fromDir = fromRoute ?? '';
 		const rel = path.posix.relative(fromDir, '') || '.';
 		return ensureTrailingSlash(rel);
 	}
 
-	const fromDir = fromRoute ? path.posix.dirname(fromRoute) : '';
+	const fromDir = fromRoute ?? '';
 	const rel = path.posix.relative(fromDir, toRoute) || '.';
 	return ensureTrailingSlash(rel);
 }

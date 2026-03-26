@@ -1,5 +1,6 @@
 ---
 title: 'Plan-and-Execute与Agent编排'
+slug: '20-工作台/40-前沿层/02-Plan-and-Execute与Agent编排'
 ---
 
 ## 核心问题
@@ -41,4 +42,4 @@ title: 'Plan-and-Execute与Agent编排'
 
 ## 配套模板
 
-- [智能体设计模板](../../40-模板/智能体设计模板/)
+- [智能体设计模板](../../../40-模板/智能体设计模板/)
